@@ -1,0 +1,193 @@
+﻿
+
+<html>
+<head>
+    @{
+        ViewData["Title"] = "Aplikacja rejestrująca czas pracy";
+    }
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <script>
+    $(document).ready(function () {
+            getRCPList();
+        });
+
+        var RCP = {
+            id: 0,
+            Nazwisko: "",
+            Zadanie: "",
+            Czas: ""
+        }
+
+        // Get all RCPs to display
+        function getRCPList() {
+            // Call Web API to get a list of RCPs
+            $.ajax({
+                url: 'http://localhost:9000/api/CzasPracies/',
+                type: 'GET',
+                dataType: 'json',
+                success: function (emloyees) {
+                    rcpListSuccess(emloyees);
+                },
+                error: function (request, message, error) {
+                    handleException(request, message, error);
+                }
+            });
+        }
+
+        // Display all RCPs returned from Web API call
+        function rcpListSuccess(emloyees) {
+            // Iterate over the collection of data
+            $("#rcpTable tbody").remove();
+            $.each(emloyees, function (index, emloyee) {
+                // Add a row to the emloyee table
+                emloyeeAddRow(emloyee);
+            });
+        }
+
+        // Add emloyee row to <table>
+        function emloyeeAddRow(emloyee) {
+            // First check if a <tbody> tag exists, add one if not
+            if ($("#rcpTable tbody").length == 0) {
+                $("#rcpTable").append("<tbody></tbody>");
+            }
+
+            // Append row to <table>
+            $("#rcpTable tbody").append(
+                emloyeeBuildTableRow(emloyee));
+        }
+
+        // Build a <tr> for a row of table data
+        function emloyeeBuildTableRow(emloyee) {
+            var newRow = "<tr>" +
+                "<td>" + emloyee.id + "</td>" +
+                "<td><input   class='input-name' type='text' value='" + emloyee.Nazwisko + "'/></td>" +
+                "<td><input  class='input-gender'  type='text' value='" + emloyee.Zadanie + "'/></td>" +
+                "<td><input  class='input-salary' type='text' value='" + emloyee.Czas + "'/></td>" +
+                "<td>" +
+                "<button type='button' " +
+                "onclick='rcpUpdate(this);' " +
+                "class='btn btn-default' " +
+                "data-id='" + emloyee.id + "' " +
+                "data-name='" + emloyee.Nazwisko + "' " +
+                "data-gender='" + emloyee.Zadanie + "' " +
+                "data-salary='" + emloyee.Czas + "' " +
+                ">" +
+                "<span class='glyphicon glyphicon-edit' /> Update" +
+                "</button> " +
+                " <button type='button' " +
+                "onclick='rcpDelete(this);'" +
+                "class='btn btn-default' " +
+                "data-id='" + emloyee.id + "'>" +
+                "<span class='glyphicon glyphicon-remove' />Delete" +
+                "</button>" +
+                "</td>" +
+                "</tr>";
+
+            return newRow;
+        }
+
+        function onAddRCP(item) {
+            var options = {};
+            options.url = "http://localhost:9000/api/CzasPracies";
+            options.type = "POST";
+            var obj = RCP;
+            obj.Nazwisko = $("#Nazwisko").val();
+            obj.Zadanie = $("#Zadanie").val();
+            obj.Czas = $("#Czas").val();
+            console.dir(obj);
+            options.data = JSON.stringify(obj);
+            options.contentType = "application/json";
+            options.dataType = "html";
+
+            options.success = function (msg) {
+                getRCPList();
+                $("#msg").html(msg);
+            },
+                options.error = function () {
+                    $("#msg").html("Błąd podczas łączenia z serwerem WEB API!!!");
+                };
+            $.ajax(options);
+        }
+
+        function rcpUpdate(item) {
+            var id = $(item).data("id");
+            var options = {};
+            options.url = "http://localhost:9000/api/CzasPracies/"
+            options.type = "PUT";
+
+            var obj = RCP;
+            obj.id = $(item).data("id");
+            obj.Nazwisko = $(".input-name", $(item).parent().parent()).val();
+            obj.Zadanie = $(".input-gender", $(item).parent().parent()).val();
+            obj.Czas = $(".input-salary", $(item).parent().parent()).val();
+            console.dir(obj);
+            options.data = JSON.stringify(obj);
+            options.contentType = "application/json";
+            options.dataType = "html";
+            options.success = function (msg) {
+                $("#msg").html(msg);
+            };
+            options.error = function () {
+                $("#msg").html("Error while calling the Web API!");
+            };
+            $.ajax(options);
+        }
+
+        function rcpDelete(item) {
+            var id = $(item).data("id");
+            var options = {};
+            options.url = "http://localhost:9000/api/CzasPracies/"
+                + id;
+            options.type = "DELETE";
+            options.dataType = "html";
+            options.success = function (msg) {
+                console.log('msg= ' + msg);
+                $("#msg").html(msg);
+                getRCPList();
+            };
+            options.error = function () {
+                $("#msg").html("Error while calling the Web API!");
+            };
+            $.ajax(options);
+        }
+
+        // Handle exceptions from AJAX calls
+        function handleException(request, message, error) {
+            var msg = "";
+            msg += "Code: " + request.status + "\n";
+            msg += "Text: " + request.statusText + "\n";
+            if (request.responseJSON != null) {
+                msg += "Message" + request.responseJSON.Message + "\n";
+            }
+
+            alert(msg);
+        }</script>
+</head>
+<body>
+    <h3>RCP Manager</h3>
+    <form>
+        <table id="rcpTable" style="border: 1px solid #999" cellpadding="1">
+            <thead>
+                <tr>
+                    <td>Id </td>
+                    <td> Nazwisko </td>
+                    <td> Zadanie </td>
+                    <td> Czas </td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input id="Nazwisko" type="text" /></td>
+                    <td><input id="Zadanie" type="text" /></td>
+                    <td><input id="Czas" type="text" /></td>
+                    <td><input type="button" id="insert" value="Insert" onclick='onAddRCP(this)' /></td>
+            </thead>
+        </table>
+        <br />
+        <div id="msg"></div>
+    </form>
+    Aplikacja rejestracji czasu pracy - zadanie testowe
+</body>
+</html>

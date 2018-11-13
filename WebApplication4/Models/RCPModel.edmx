@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="RCPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CzasPracy">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="Zadanie" Type="nchar" MaxLength="10" />
+          <Property Name="Opis" Type="nchar" MaxLength="50" />
+          <Property Name="Czas" Type="nchar" MaxLength="10" />
+          <Property Name="Nazwisko" Type="nchar" MaxLength="10" />
+          <Property Name="Imię" Type="nchar" MaxLength="10" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="RCPModelStoreContainer">
+          <EntitySet Name="CzasPracy" EntityType="Self.CzasPracy" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RCPModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CzasPracy">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="Zadanie" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Opis" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Czas" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Nazwisko" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Imię" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityContainer Name="RCPEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CzasPracy" EntityType="Self.CzasPracy" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RCPModelStoreContainer" CdmEntityContainer="RCPEntities1">
+          <EntitySetMapping Name="CzasPracy">
+            <EntityTypeMapping TypeName="RCPModel.CzasPracy">
+              <MappingFragment StoreEntitySet="CzasPracy">
+                <ScalarProperty Name="Zadanie" ColumnName="Zadanie" />
+                <ScalarProperty Name="Opis" ColumnName="Opis" />
+                <ScalarProperty Name="Czas" ColumnName="Czas" />
+                <ScalarProperty Name="Nazwisko" ColumnName="Nazwisko" />
+                <ScalarProperty Name="Imię" ColumnName="Imię" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
