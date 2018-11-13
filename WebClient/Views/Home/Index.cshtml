@@ -9,7 +9,7 @@
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
             crossorigin="anonymous"></script>
     <script>
-    $(document).ready(function () {
+        $(document).ready(function () {
             getRCPList();
         });
 
@@ -68,7 +68,7 @@
                 "<td>" +
                 "<button type='button' " +
                 "onclick='rcpUpdate(this);' " +
-                "class='btn btn-default' " +
+                "class='btn btn-primary' " +
                 "data-id='" + emloyee.id + "' " +
                 "data-name='" + emloyee.Nazwisko + "' " +
                 "data-gender='" + emloyee.Zadanie + "' " +
@@ -78,7 +78,7 @@
                 "</button> " +
                 " <button type='button' " +
                 "onclick='rcpDelete(this);'" +
-                "class='btn btn-default' " +
+                "class='btn btn-danger' " +
                 "data-id='" + emloyee.id + "'>" +
                 "<span class='glyphicon glyphicon-remove' />Delete" +
                 "</button>" +
@@ -164,14 +164,24 @@
 
             alert(msg);
         }</script>
+    <style>
+        table, th, td {
+            border: 1px solid #e1d6d6;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h3>RCP Manager</h3>
+    <h3>Rejestracja Czasu Pracy - Manager</h3>
     <form>
-        <table id="rcpTable" style="border: 1px solid #999" cellpadding="1">
+        <table id="rcpTable" >
             <thead>
                 <tr>
-                    <td>Id </td>
+                    <td> Id </td>
                     <td> Nazwisko </td>
                     <td> Zadanie </td>
                     <td> Czas </td>
@@ -182,7 +192,7 @@
                     <td><input id="Nazwisko" type="text" /></td>
                     <td><input id="Zadanie" type="text" /></td>
                     <td><input id="Czas" type="text" /></td>
-                    <td><input type="button" id="insert" value="Insert" onclick='onAddRCP(this)' /></td>
+                    <td><input class="btn btn-info" type="button" id="insert" value="Insert" onclick='onAddRCP(this)'/> </td>
             </thead>
         </table>
         <br />
